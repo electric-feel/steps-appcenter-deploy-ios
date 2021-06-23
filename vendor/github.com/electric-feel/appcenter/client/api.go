@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bitrise-io/appcenter/util"
+	"github.com/electric-feel/appcenter/util"
 
-	"github.com/bitrise-io/appcenter/model"
+	"github.com/electric-feel/appcenter/model"
 )
 
 const (
@@ -77,6 +77,24 @@ func (api API) GetGroupByName(groupName string, app model.App) (model.Group, err
 	}
 
 	return getResponse, err
+}
+
+func (api API) GetAllGroups(app model.App) ([]model.Group, error) {
+	var (
+		getURL = fmt.Sprintf("%s/v0.1/apps/%s/%s/distribution_groups", baseURL, app.Owner, app.AppName)
+		getResponse []model.Group
+	)
+
+	statusCode, err := api.Client.jsonRequest(http.MethodGet, getURL, nil, &getResponse)
+	if err != nil {
+		return []model.Group{}, err
+	}
+
+	if statusCode != http.StatusOK {
+		return []model.Group{}, fmt.Errorf("invalid status code: %d, url: %s, body: %v", statusCode, getURL, getResponse)
+	}
+
+	return getResponse, nil
 }
 
 // GetStore ...
