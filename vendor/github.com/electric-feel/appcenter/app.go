@@ -3,8 +3,8 @@ package appcenter
 import (
 	"fmt"
 
-	"github.com/bitrise-io/appcenter/client"
-	"github.com/bitrise-io/appcenter/model"
+	"github.com/electric-feel/appcenter/client"
+	"github.com/electric-feel/appcenter/model"
 )
 
 // AppAPI ...
@@ -38,6 +38,11 @@ func (a AppAPI) NewRelease() (model.Release, error) {
 // Groups ...
 func (a AppAPI) Groups(name string) (model.Group, error) {
 	return a.API.GetGroupByName(name, a.ReleaseOptions.App)
+}
+
+// All Groups...
+func (a AppAPI) AllGroups() ([]model.Group, error) {
+	return a.API.GetAllGroups(a.ReleaseOptions.App)
 }
 
 // Stores ...
